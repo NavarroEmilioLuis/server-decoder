@@ -3,8 +3,10 @@
   "version": "1.0.0",
   "description": "A web API to play decoder",
   "main": "index.js",
+  "type": "module",
   "scripts": {
-    "test": "test"
+    "test": "test",
+    "start": "nodemon index.js"
   },
   "repository": {
     "type": "git",
@@ -20,5 +22,15 @@
   "bugs": {
     "url": "https://github.com/NavarroEmilioLuis/server-decoder/issues"
   },
-  "homepage": "https://github.com/NavarroEmilioLuis/server-decoder#readme"
+  "homepage": "https://github.com/NavarroEmilioLuis/server-decoder#readme",
+  "devDependencies": {
+    "eslint": "^8.19.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "nodemon": "^2.0.19",
+    "prettier": "^2.7.1"
+  },
+  "dependencies": {
+    "express": "^4.18.1"
+  }
 }
