@@ -1,0 +1,24 @@
+{
+  "name": "server-decoder",
+  "version": "1.0.0",
+  "description": "A web API to play decoder",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NavarroEmilioLuis/server-decoder.git"
+  },
+  "keywords": [
+    "decoder",
+    "game",
+    "mastermind"
+  ],
+  "author": "NavarroEmilioLuis",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/NavarroEmilioLuis/server-decoder/issues"
+  },
+  "homepage": "https://github.com/NavarroEmilioLuis/server-decoder#readme"
+}
