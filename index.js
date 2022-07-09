@@ -1,13 +1,19 @@
 import express from 'express';
+import bodyParser from 'body-parser';
+import routes from './app/routes/index.js';
 
 // Init the app
 const app = express();
 const port = 3000;
+app.use(bodyParser.urlencoded({ extended: true }));
 
 // Index route
 app.get('/', (req, res) => {
   res.send('DECODER');
 });
+
+// Mount all routes
+app.use('/', routes);
 
 // Don't allow any other routes
 app.get('*', (req, res) => {
