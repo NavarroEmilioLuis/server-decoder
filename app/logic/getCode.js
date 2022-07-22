@@ -1,14 +1,13 @@
 /*
-  Returns a random code with specified size,
-  containing only specified colors. Colors may repeat.
+  Returns a random code with specified config. Will read
+  size, colors and if duplicates are allowed.
 
-  size: int
-  colors: array<string>
-  canRepeat: boolean
+  config: object {}
 
   Return value: array<string>
 */
-export function getCode(size, colors, canRepeat = true) {
+export function getCode(config) {
+  const { size, colors, duplicates } = config;
   const code = [];
 
   while (code.length !== size) {
@@ -16,7 +15,7 @@ export function getCode(size, colors, canRepeat = true) {
     const randomIndex = Math.floor(Math.random() * 10) % colors.length;
     const color = colors[randomIndex];
 
-    if (canRepeat) code.push(color);
+    if (duplicates) code.push(color);
     // Don't allow duplicates
     else if (code.indexOf(color) === -1) code.push(color);
   }
