@@ -1,4 +1,4 @@
-import { GAME_TYPES, GAME_CONFIG } from '../constants/index.js';
+import { BLANK_TOKEN, GAME_TYPES, GAME_CONFIG } from '../constants/index.js';
 
 // Converts a query param to a boolean. Even adding the param without
 // a value will default to true. i.e. "?param"
@@ -37,11 +37,18 @@ export function getGameConfig(type, query) {
   const { attempts, size, colors, duplicates, blanks } = query;
   const defaultConfig = GAME_CONFIG[GAME_TYPES.NORMAL];
 
+  // Modify the colors array if the config allows blanks
+  const hasBlanks = queryParamToBoolean(blanks);
+  const finalColors = colors ? queryParamToArray(colors) : defaultConfig.colors;
+  if (hasBlanks) {
+    finalColors.push(BLANK_TOKEN);
+  }
+
   return {
     attempts: attempts ? queryParamToInteger(attempts) : defaultConfig.attempts,
     size: size ? queryParamToInteger(size) : defaultConfig.size,
-    colors: colors ? queryParamToArray(colors) : defaultConfig.colors,
+    colors: finalColors,
     duplicates: queryParamToBoolean(duplicates),
-    blanks: queryParamToBoolean(blanks),
+    blanks: hasBlanks,
   };
 }
