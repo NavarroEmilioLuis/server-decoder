@@ -22,10 +22,10 @@ export const GAME_TYPES_VALUES = Object.values(GAME_TYPES);
 export const GAME_TYPES_STRING = GAME_TYPES_VALUES.join(', ');
 export const GAME_CONFIG = {
   [GAME_TYPES.NORMAL]: {
-    maxAttempts: 12,
+    attempts: 12,
     size: 4,
     colors: COLORS,
     duplicates: true,
-    blank: false,
+    blanks: false,
   },
 };

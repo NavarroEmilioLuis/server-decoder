@@ -9,6 +9,6 @@
 */
 export function updateGame(game, code) {
   if (game.state.code === code) return 1;
-  else if (game.state.currentAttempt === game.config.maxAttempts) return 0;
+  else if (game.state.currentAttempt === game.config.attempts) return 0;
   return null;
 }
