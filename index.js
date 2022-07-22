@@ -1,6 +1,10 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import routes from './app/routes/index.js';
+import { validateConstants } from './app/constants/validateConstants.js';
+
+// Make sure the constants are OK
+validateConstants();
 
 // Init the app
 const app = express();

@@ -13,7 +13,7 @@ const COLORS = [
 export const BLANK_TOKEN = '_';
 
 // Configuration
-const GAME_TYPES = {
+export const GAME_TYPES = {
   NORMAL: 'normal',
   CUSTOM: 'custom',
 };
