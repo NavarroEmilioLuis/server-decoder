@@ -23,14 +23,19 @@ export function isValidConfig(config) {
   // Ensure size is a number from 1 to 16
   if (!Number.isFinite(size) || size < 1 || size > 16) return false;
 
-  // Ensure colors is an array with length
-  if (!Array.isArray(colors) || colors.length === 0) return false;
+  // Ensure colors is an array with length ranging from 2 to 64
+  if (!Array.isArray(colors) || colors.length < 2 || colors.length > 64)
+    return false;
 
-  // Ensure all colors are strings
+  // Ensure all colors are strings and that they don't repeat
+  const includedColors = {};
   for (let i = 0; i < colors.length; i++) {
     const color = colors[i];
 
     if (typeof color !== 'string') return false;
+    if (includedColors[color]) return false;
+
+    includedColors[color] = true;
   }
 
   // All arguments are valid
