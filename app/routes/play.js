@@ -11,7 +11,7 @@ import { getGameResult } from '../logic/getGameResult.js';
 import { updateGame } from '../logic/updateGame.js';
 
 import { arrayToString } from '../data/arrayToString.js';
-
+import { getCreateGameMessage } from '../data/getCreateGameMessage.js';
 
 /*
   All active games will be stored as an object in memory. They will be
@@ -26,23 +26,28 @@ export const play = express.Router();
 play.get('/', (req, res) => {
   const { type, ...query } = req.query;
 
+  // Make sure game type exists
   if (GAME_TYPES_VALUES.includes(type) === false) {
     throw new Error(
       `Invalid game type, please select a valid game type: ${GAME_TYPES_STRING}`
     );
   }
 
+  // Validate the game is playable
   const gameConfig = getGameConfig(type, query);
   if (isValidConfig(gameConfig) === false) {
     throw new Error(`Invalid config: ${JSON.stringify(gameConfig)}`);
   }
 
+  // Create new game
   const gameCode = getCode(gameConfig);
   const userId = TEST_USER_ID;
   const game = createGame(userId, gameConfig, gameCode);
 
+  // Save the game and send config back to the user
   GAMES[userId] = game;
-  res.send(game);
+  const responseMessage = getCreateGameMessage(game);
+  res.send(responseMessage);
 });
 
 play.post('/', (req, res) => {
