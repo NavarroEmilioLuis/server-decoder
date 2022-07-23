@@ -1,5 +1,4 @@
 import express from 'express';
-import bodyParser from 'body-parser';
 import routes from './app/routes/index.js';
 import { validateConstants } from './app/constants/validateConstants.js';
 
@@ -9,7 +8,7 @@ validateConstants();
 // Init the app
 const app = express();
 const port = 3000;
-app.use(bodyParser.json());
+app.use(express.json());
 
 // Index route
 app.get('/', (req, res) => {
