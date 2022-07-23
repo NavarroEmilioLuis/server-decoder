@@ -8,7 +8,7 @@ export function getUpdateGameMessage(colorMatches, positionMatches, game) {
   }
 
   if (game.state.result === 0) {
-    return `You lose! Code was: ${arrayToString(game.state.code)}`;
+    return `You lose! Code was: ${arrayToString(game.state.code)}.`;
   }
 
   return `You matched ${colorMatches} colors and ${positionMatches} positions.`;
