@@ -4,6 +4,14 @@ import { getGameConfig } from '../logic/getGameConfig.js';
 import { isValidConfig } from '../logic/isValidConfig.js';
 import { getCode } from '../logic/getCode.js';
 import { createGame } from '../logic/createGame.js';
+import { isValidCode } from '../logic/isValidCode.js';
+import { isValidPush } from '../logic/isValidPush.js';
+import { compareCodes } from '../logic/compareCodes.js';
+import { getGameResult } from '../logic/getGameResult.js';
+import { updateGame } from '../logic/updateGame.js';
+
+import { arrayToString } from '../data/arrayToString.js';
+
 
 /*
   All active games will be stored as an object in memory. They will be
@@ -35,4 +43,52 @@ play.get('/', (req, res) => {
 
   GAMES[userId] = game;
   res.send(game);
+});
+
+play.post('/', (req, res) => {
+  const { code } = req.body;
+
+  const userId = TEST_USER_ID;
+  const game = GAMES[userId];
+
+  // Make sure the user has a current game
+  if (!game) {
+    throw new Error(`No game is currently being played!`);
+  }
+
+  // Validate user input
+  if (!code || Array.isArray(code) === false) {
+    throw new Error(`Code needs to be an array, received: ${code}`);
+  }
+
+  if (isValidCode(game, code) === false) {
+    throw new Error(
+      // eslint-disable-next-line prettier/prettier
+      `Invalid code: ${arrayToString(code)}. You should only include colors: ${arrayToString(game.config.colors)}`
+    );
+  }
+
+  if (isValidPush(game, userId) === false) {
+    throw new Error(`You're not allowed to keep playing this game.`);
+  }
+
+  // Compare codes and update game
+  const { colorMatches, positionMatches } = compareCodes(game.state.code, code);
+  const result = getGameResult(game, positionMatches);
+  const updatedGame = updateGame(game, code, result);
+
+  // Save updated game
+  GAMES[userId] = updatedGame;
+
+  // Create user feedback message
+  let responseMessage = `You matched ${colorMatches} colors and ${positionMatches} positions.\n`;
+
+  if (result === 1) {
+    responseMessage = `You won! Cracked the code in ${updatedGame.state.currentAttempt} attempts.`;
+  } else if (result === 0) {
+    // eslint-disable-next-line prettier/prettier
+    responseMessage = `You lose! Code was: ${arrayToString(updatedGame.state.code)}`;
+  }
+
+  res.send(responseMessage);
 });
