@@ -1,4 +1,4 @@
-import { arrayToString } from "../data/arrayToString.js";
+import { arrayToString } from '../data/arrayToString.js';
 
 const COLORS = [
   'blue',
