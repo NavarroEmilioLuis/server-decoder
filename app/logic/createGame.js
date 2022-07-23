@@ -15,7 +15,7 @@ export function createGame(userId, config, code) {
     },
     state: {
       code: [...code],
-      currentAttempt: 1,
+      currentAttempt: 0,
       attempts: [],
       result: null,
     },
