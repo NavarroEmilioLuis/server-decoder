@@ -12,6 +12,7 @@ import { updateGame } from '../logic/updateGame.js';
 
 import { arrayToString } from '../data/arrayToString.js';
 import { getCreateGameMessage } from '../data/getCreateGameMessage.js';
+import { getUpdateGameMessage } from '../data/getUpdateGameMessage.js';
 
 /*
   All active games will be stored as an object in memory. They will be
@@ -82,18 +83,12 @@ play.post('/', (req, res) => {
   const result = getGameResult(game, positionMatches);
   const updatedGame = updateGame(game, code, result);
 
-  // Save updated game
+  // Save updated game and send back user message
   GAMES[userId] = updatedGame;
-
-  // Create user feedback message
-  let responseMessage = `You matched ${colorMatches} colors and ${positionMatches} positions.\n`;
-
-  if (result === 1) {
-    responseMessage = `You won! Cracked the code in ${updatedGame.state.currentAttempt} attempts.`;
-  } else if (result === 0) {
-    // eslint-disable-next-line prettier/prettier
-    responseMessage = `You lose! Code was: ${arrayToString(updatedGame.state.code)}`;
-  }
-
+  const responseMessage = getUpdateGameMessage(
+    colorMatches,
+    positionMatches,
+    updatedGame
+  );
   res.send(responseMessage);
 });
