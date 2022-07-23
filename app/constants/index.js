@@ -1,3 +1,5 @@
+import { arrayToString } from "../data/arrayToString.js";
+
 const COLORS = [
   'blue',
   'green',
@@ -19,7 +21,7 @@ export const GAME_TYPES = {
 };
 
 export const GAME_TYPES_VALUES = Object.values(GAME_TYPES);
-export const GAME_TYPES_STRING = GAME_TYPES_VALUES.join(', ');
+export const GAME_TYPES_STRING = arrayToString(GAME_TYPES_VALUES);
 export const GAME_CONFIG = {
   [GAME_TYPES.NORMAL]: {
     attempts: 12,
