@@ -12,6 +12,7 @@ import { updateGame } from '../logic/updateGame.js';
 import { arrayToString } from '../data/arrayToString.js';
 import { getCreateGameMessage } from '../data/getCreateGameMessage.js';
 import { getUpdateGameMessage } from '../data/getUpdateGameMessage.js';
+import { removeGameFromMemory } from '../data/removeGameFromMemory.js';
 
 /*
   All active games will be stored as an object in memory. They will be
@@ -19,6 +20,8 @@ import { getUpdateGameMessage } from '../data/getUpdateGameMessage.js';
   one open game at a time.
 */
 const GAMES = {};
+const TIMERS = {};
+const MAX_GAME_DURATION = 3 * 60 * 60 * 1000; // 3 Hours
 const TEST_USER_ID = 'test';
 
 export const play = express.Router();
@@ -39,10 +42,26 @@ play.get('/', (req, res) => {
     throw new Error(`Invalid config: ${JSON.stringify(gameConfig)}`);
   }
 
+  // Remove previous game if it exists
+  const userId = TEST_USER_ID;
+  const previousGame = GAMES[userId];
+  if (previousGame !== undefined) {
+    clearTimeout(TIMERS[userId]);
+    removeGameFromMemory(GAMES, TIMERS, userId);
+  }
+
   // Create new game
   const gameCode = getCode(gameConfig);
-  const userId = TEST_USER_ID;
   const game = createGame(userId, gameConfig, gameCode);
+
+  // Set deletion timer to the game
+  TIMERS[userId] = setTimeout(
+    removeGameFromMemory,
+    MAX_GAME_DURATION,
+    GAMES,
+    TIMERS,
+    userId
+  );
 
   // Save the game and send config back to the user
   GAMES[userId] = game;
@@ -82,8 +101,15 @@ play.post('/', (req, res) => {
   const result = getGameResult(game, positionMatches);
   const updatedGame = updateGame(game, code, result);
 
-  // Save updated game and send back user message
-  GAMES[userId] = updatedGame;
+  // Remove game and timer if it's over, otherwise update it
+  if (result !== null) {
+    clearTimeout(TIMERS[userId]);
+    removeGameFromMemory(GAMES, TIMERS, userId);
+  } else {
+    GAMES[userId] = updatedGame;
+  }
+
+  // Send back user message
   const responseMessage = getUpdateGameMessage(
     colorMatches,
     positionMatches,
