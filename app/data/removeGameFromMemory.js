@@ -7,7 +7,6 @@
   userId: string
 */
 export function removeGameFromMemory(GAMES, TIMERS, userId) {
-  console.log('running function at', Date.now());
   delete GAMES[userId];
   delete TIMERS[userId];
 }
