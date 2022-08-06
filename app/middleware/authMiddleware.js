@@ -1,6 +1,8 @@
 import { verifyToken } from '../auth/verifyToken.js';
 import { getUser } from '../auth/getUser.js';
 
+// Returns the token from authorization header
+// or undefined if it doesn't exist
 function getTokenFromHeader(req) {
   const { headers } = req;
   const authHeader = headers.authorization || '';
@@ -9,6 +11,7 @@ function getTokenFromHeader(req) {
   return token;
 }
 
+// Returns a userId or null if the token doesn't match
 function getUserIdFromToken(token) {
   try {
     const { userId } = verifyToken(token);

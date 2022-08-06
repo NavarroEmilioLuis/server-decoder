@@ -3,6 +3,8 @@ import jwt from 'jsonwebtoken';
 import { JWT_SECRET_KEY } from './secret.js';
 import { getUser } from './getUser.js';
 
+// Returns a token if the credentials are matched,
+// otherwise returns null.
 export async function getToken(username, password) {
   const user = getUser(username);
   const encryptedPassword = user?.password || '';
