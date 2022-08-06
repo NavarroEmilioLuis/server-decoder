@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import JWT_SECRET_KEY from './secret.js';
+import { JWT_SECRET_KEY } from './secret.js';
 import { getUser } from './getUser.js';
 
 export async function getToken(username, password) {
