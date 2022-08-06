@@ -17,8 +17,9 @@ routes.use('/login', login);
 routes.use('/register', register);
 
 // Private routes
-routes.use(authMiddleware);
+routes.use('/play', authMiddleware);
 routes.use('/play', play);
+routes.use('/stats', authMiddleware);
 routes.use('/stats', stats);
 
 export default routes;
