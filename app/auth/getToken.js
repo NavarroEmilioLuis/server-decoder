@@ -9,7 +9,7 @@ export async function getToken(username, password) {
   const isPasswordMatch = await bcrypt.compare(password, encryptedPassword);
 
   if (!user || isPasswordMatch === false) {
-    throw new Error('Unable to authenticate user');
+    return null;
   }
 
   const token = jwt.sign({ userId: username }, JWT_SECRET_KEY, {
