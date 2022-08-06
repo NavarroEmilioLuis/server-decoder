@@ -5,7 +5,8 @@ import { getUser } from './getUser.js';
 
 export async function getToken(username, password) {
   const user = getUser(username);
-  const isPasswordMatch = await bcrypt.compare(password, user?.password);
+  const encryptedPassword = user?.password || '';
+  const isPasswordMatch = await bcrypt.compare(password, encryptedPassword);
 
   if (!user || isPasswordMatch === false) {
     throw new Error('Unable to authenticate user');
