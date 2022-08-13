@@ -13,6 +13,7 @@ export function updateGame(game, code, result) {
     userId: game.userId,
     config: {
       ...game.config,
+      colors: [...game.config.colors],
     },
     state: {
       code: [...game.state.code],

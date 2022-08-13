@@ -12,6 +12,7 @@ export function createGame(userId, config, code) {
     userId,
     config: {
       ...config,
+      colors: [...config.colors],
     },
     state: {
       code: [...code],

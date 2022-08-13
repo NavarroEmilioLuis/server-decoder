@@ -29,13 +29,14 @@ function queryParamToArray(param) {
 */
 export function getGameConfig(type, query) {
   if (type !== GAME_TYPES.CUSTOM) {
-    return GAME_CONFIG[type];
+    const currentConfig = GAME_CONFIG[type];
+    return { ...currentConfig, colors: [...currentConfig.colors] };
   }
 
   // Parse all config params from the query, if they don't exist,
   // returns default (except booleans, which are assumed false)
   const { attempts, size, colors, duplicates, blanks } = query;
-  const defaultConfig = GAME_CONFIG[GAME_TYPES.NORMAL];
+  const defaultConfig = { ...GAME_CONFIG[GAME_TYPES.NORMAL] };
 
   // Modify the colors array if the config allows blanks
   const hasBlanks = queryParamToBoolean(blanks);
@@ -47,7 +48,7 @@ export function getGameConfig(type, query) {
   return {
     attempts: attempts ? queryParamToInteger(attempts) : defaultConfig.attempts,
     size: size ? queryParamToInteger(size) : defaultConfig.size,
-    colors: finalColors,
+    colors: [...finalColors],
     duplicates: queryParamToBoolean(duplicates),
     blanks: hasBlanks,
   };
