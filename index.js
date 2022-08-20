@@ -1,9 +1,14 @@
 import express from 'express';
 import routes from './app/routes/index.js';
 import { validateConstants } from './app/constants/validateConstants.js';
+import { createTables } from './app/database/createTables.js';
+import { db, closeConnection } from './app/database/index.js';
 
 // Make sure the constants are OK
 validateConstants();
+
+// Ensure database tables exist
+await createTables(db);
 
 // Init the app
 const app = express();
@@ -32,4 +37,8 @@ app.use((err, req, res, next) => {
 
 app.listen(port, () => {
   console.log(`Server listening on port ${port}`);
+});
+
+process.on('SIGINT', async function () {
+  closeConnection();
 });
