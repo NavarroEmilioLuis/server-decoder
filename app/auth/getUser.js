@@ -1,5 +1,5 @@
-import { USERS } from './users.js';
+import { db } from "../database/index.js";
 
 export async function getUser(username) {
-  return USERS.find((user) => user.username === username) || null;
+  return db.oneOrNone('SELECT * FROM users WHERE username = $1', [username]);
 }
