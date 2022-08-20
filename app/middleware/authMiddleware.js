@@ -32,7 +32,7 @@ export const authMiddleware = async (req, res, next) => {
     return res.status(401).send('Invalid token.');
   }
 
-  const user = getUser(userId);
+  const user = await getUser(userId);
   req.user = user;
   next();
 };

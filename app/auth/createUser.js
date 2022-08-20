@@ -1,5 +1,5 @@
 import { USERS } from './users.js';
 
-export function createUser(username, password) {
+export async function createUser(username, password) {
   USERS.push({ username, password });
 }

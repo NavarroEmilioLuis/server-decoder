@@ -13,14 +13,14 @@ register.post('/', async (req, res) => {
   }
 
   // Check if user already exists
-  const user = getUser(username);
+  const user = await getUser(username);
   if (user) {
     return res.status(409).send('Username already exists.');
   }
 
   // Save new user
   const encryptedPassword = await createPasswordHash(password);
-  createUser(username, encryptedPassword);
+  await createUser(username, encryptedPassword);
 
   res.send('Successfully created new user.');
 });
