@@ -22,7 +22,6 @@ import { removeGameFromMemory } from '../data/removeGameFromMemory.js';
 const GAMES = {};
 const TIMERS = {};
 const MAX_GAME_DURATION = 3 * 60 * 60 * 1000; // 3 Hours
-const TEST_USER_ID = 'test';
 
 export const play = express.Router();
 
@@ -43,7 +42,7 @@ play.get('/', (req, res) => {
   }
 
   // Remove previous game if it exists
-  const userId = TEST_USER_ID;
+  const userId = req.user.id;
   const previousGame = GAMES[userId];
   if (previousGame !== undefined) {
     clearTimeout(TIMERS[userId]);
@@ -72,7 +71,7 @@ play.get('/', (req, res) => {
 play.post('/', (req, res) => {
   const { code } = req.body;
 
-  const userId = TEST_USER_ID;
+  const userId = req.user.id;
   const game = GAMES[userId];
 
   // Make sure the user has a current game
