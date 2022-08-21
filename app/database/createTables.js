@@ -16,10 +16,10 @@ export async function createTables(db) {
     `CREATE TABLE IF NOT EXISTS $1:name (
       id SERIAL PRIMARY KEY,
       user_id INTEGER REFERENCES $2:name($3:name),
-      games_played INTEGER,
-      max_streak INTEGER,
-      current_streak INTEGER,
-      score INTEGER
+      games_played INTEGER DEFAULT 0,
+      max_streak INTEGER DEFAULT 0,
+      current_streak INTEGER DEFAULT 0,
+      score INTEGER DEFAULT 0
     );`,
     ['stats', 'users', 'id']
   );
