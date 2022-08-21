@@ -20,7 +20,11 @@ register.post('/', async (req, res) => {
 
   // Save new user
   const encryptedPassword = await createPasswordHash(password);
-  await createUser(username, encryptedPassword);
+  const isUserCreated = await createUser(username, encryptedPassword);
+
+  if (isUserCreated === false) {
+    return res.status(422).send('Unable to create new user.');
+  }
 
   res.send('Successfully created new user.');
 });
